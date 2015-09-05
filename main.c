@@ -9,8 +9,8 @@ int main()
         vidWrite("initializing GDT and IDT..\n");
         stdtInit();
 
-        vidWrite("sending interrupt 2..\n");
-        /* asm volatile ("int $0x2"); */
+        vidWrite("sending interrupt 0..\n");
+        asm volatile ("int $0x0");
 
         return 0xdeadbabe;
 }

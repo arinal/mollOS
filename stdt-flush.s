@@ -47,17 +47,20 @@ isrCommon:
   .global isr0
 isr0:
   cli
-	push 0
+  pushl $0
+	pushl $0
   jmp isrCommon
 
   .global isr1
 isr1:
   cli
-  push 1
+  pushl $0
+  pushl $1
   jmp isrCommon
 
   .global isr2
 isr2:
 	cli
-	push 2
+	pushl $0
+  pushl $2
 	jmp isrCommon
