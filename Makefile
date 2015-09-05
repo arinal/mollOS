@@ -1,4 +1,4 @@
-OBJECTS = boot.o main.o common.o video.o
+OBJECTS = boot.o main.o common.o video.o gdt.o idt.o stdt-flush.o
 CFLAGS = -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector -Wall -W
 LDFLAGS = -Tlink.ld -melf_i386
 ASFLAGS = --32
@@ -26,7 +26,9 @@ dep:
 
 # Deps (use make dep to generate this)
 common.o: common.c common.h
-main.o: main.c video.h
+gdt.o: gdt.c common.h
+idt.o: idt.c common.h
+main.o: main.c common.h video.h stdt.h
 video.o: video.c common.h
 
 kernel: $(OBJECTS) link.ld
