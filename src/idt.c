@@ -93,7 +93,8 @@ struct registerState {
         u32 eip, cs, eflags, userEsp, ss;
 };
 
-void isrHandler(/* struct registerState registers */)
+void isrHandler(struct registerState registers)
 {
-        vidWrite("Damn!\n");
+        /* printk("Handled interrupt %d\n", registers.intNo); */
+        vidWrite("DAMN!\n");
 }

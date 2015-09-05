@@ -1,15 +1,14 @@
-OBJECTS = boot.o main.o common.o video.o gdt.o idt.o stdt-flush.o
-CFLAGS = -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector -Wall -W
-LDFLAGS = -Tlink.ld -melf_i386
-ASFLAGS = --32
+BUILDIR = build
 
-all: kernel
+all:
+	cd src && $(MAKE)
 
-image: kernel
-	@echo 'Updating floopy.img..'
-	@sudo /sbin/losetup /dev/loop0 floppy.img
+image: all
+	@echo 'Updating floppy.img..'
+	@cp floppy.img $(BUILDIR)/floppy.img
+	@sudo /sbin/losetup /dev/loop0 $(BUILDIR)/floppy.img
 	@sudo mount /dev/loop0 /mnt
-	@sudo cp kernel /mnt/kernel
+	@sudo cp build/kernel /mnt/kernel
 	@sudo umount /dev/loop0
 	@sudo /sbin/losetup -d /dev/loop0
 
@@ -17,20 +16,6 @@ run: image
 	bochs
 
 clean:
-	-rm *.o kernel
+	cd src && $(MAKE) clean
 
-dep:
-	$(CC) -MM *.c
-
-.PHONY: all image run clean dep
-
-# Deps (use make dep to generate this)
-common.o: common.c common.h
-gdt.o: gdt.c common.h
-idt.o: idt.c common.h
-main.o: main.c common.h video.h stdt.h
-video.o: video.c common.h
-
-kernel: $(OBJECTS) link.ld
-	ld $(LDFLAGS) -o kernel $(OBJECTS)
-
+.PHONY: all image run clean
