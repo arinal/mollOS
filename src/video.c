@@ -44,6 +44,13 @@ static void scroll()
         cursorLocation.y = HEIGHT;
 }
 
+void vidGoto(int x, int y)
+{
+        cursorLocation.x = x;
+        cursorLocation.y = y;
+        moveCursor();
+}
+
 void vidPut(char c)
 {
         if (c == CHR_BACKSPACE && cursorLocation.x) cursorLocation.x--;

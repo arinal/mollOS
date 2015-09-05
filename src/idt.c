@@ -57,8 +57,8 @@ static void idtSetGate(u8 n, void isr(), u16 selector, u8 flags)
         struct idtEntry *entry = idtEntries + n;
 
         u32 isrAddr = (u32)isr;
-        entry->baseLo = isrAddr & 0xffff;
-        entry->baseHi = (isrAddr >> 16) & 0xffff;
+        entry->baseLo = isrAddr & U16_MAX;
+        entry->baseHi = (isrAddr >> 16) & U16_MAX;
 
         entry->selector = selector;
         entry->always0 = 0;
@@ -96,5 +96,8 @@ struct registerState {
 void isrHandler(struct registerState registers)
 {
         /* printk("Handled interrupt %d\n", registers.intNo); */
-        vidWrite("DAMN!\n");
+        vidWrite("Handled interrupt ");
+        char buff[4];
+        itoa(registers.intNo, buff);
+        vidWrite(buff);
 }

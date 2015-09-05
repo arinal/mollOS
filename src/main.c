@@ -1,4 +1,5 @@
 #include "common.h"
+#include "string.h"
 #include "video.h"
 #include "stdt.h"
 
@@ -9,8 +10,8 @@ int main()
         vidWrite("initializing GDT and IDT..\n");
         stdtInit();
 
-        vidWrite("sending interrupt 0..\n");
-        asm volatile ("int $0x0");
+        vidWrite("sending interrupt 1..\n");
+        asm volatile ("int $0x1");
 
         return 0xdeadbabe;
 }

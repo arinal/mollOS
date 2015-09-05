@@ -28,11 +28,11 @@ static void gdtSet(i32 n, u32 base, u32 limit, u8 accessFlags, u8 granularity)
 {
         struct gdtEntry *entry = gdtEntries + n;
 
-        entry->baseLo = (base & 0xffff);
-        entry->baseMid = (base >> 16) & 0xff;
-        entry->baseHi = (base >> 24) & 0xff;
+        entry->baseLo = (base & U16_MAX);
+        entry->baseMid = (base >> 16) & U8_MAX;
+        entry->baseHi = (base >> 24) & U8_MAX;
 
-        entry->limitLo = (limit & 0xffff);
+        entry->limitLo = (limit & U16_MAX);
         entry->granularity = (limit >> 16) & 0xf;
 
         entry->granularity |= granularity & 0xf0;
@@ -45,10 +45,10 @@ void gdtInit()
         gdtPtr.base = gdtEntries;
 
         gdtSet(0, 0, 0, 0, 0);
-        gdtSet(1, 0, 0xffffffff, CODE_KERN_SEGMENT_FLAG, 0xcf);
-        gdtSet(2, 0, 0xffffffff, DATA_KERN_SEGMENT_FLAG, 0xcf);
-        gdtSet(3, 0, 0xffffffff, CODE_USER_SEGMENT_FLAG, 0xcf);
-        gdtSet(4, 0, 0xffffffff, DATA_USER_SEGMENT_FLAG, 0xcf);
+        gdtSet(1, 0, U32_MAX, CODE_KERN_SEGMENT_FLAG, 0xcf);
+        gdtSet(2, 0, U32_MAX, DATA_KERN_SEGMENT_FLAG, 0xcf);
+        gdtSet(3, 0, U32_MAX, CODE_USER_SEGMENT_FLAG, 0xcf);
+        gdtSet(4, 0, U32_MAX, DATA_USER_SEGMENT_FLAG, 0xcf);
 
         gdtFlush(&gdtPtr);
 }

@@ -2,3 +2,5 @@ TAGS
 *.o
 kernel
 bochsout.txt
+
+/build/
