@@ -48,58 +48,31 @@ void kprint(const char *format, ...)
 {
         const char *p;
         const int *args = (const int*)(&format + 1);
-        vidWrite("-> ");
-        vidWrite((char*)args);
-        vidPut('\n');
+        char buff[50];
         int argc = -1;
         for (p = format; *p != 0; ++p) {
-                if (*p++ != '%') vidPut(*p);
+                if (*p != '%') vidPut(*p);
+                else if (*p + 1 == '%')
+                        vidPut('%'), p++;
                 else {
                         argc++;
-                        int i;
-                        char *s;
-                        switch (*p) {
+                        switch (*++p) {
                         case 'c':
-                                i = args[argc];
-                                vidPut(i);
+                                vidPut(args[argc]);
                                 break;
-                                /* case 'd': */
-                                /*         i = args[argc]; */
-                                /*         s = itoa(i, fmtbuf, 10); */
-                                /*         fputs(s, stdout); */
-                                /* break; */
+                        case 'd':
+                                itoa(args[argc], buff);
+                                vidWrite(buff);
+                                break;
                         case 's':
-                                s = (char*)args[argc];
-                                vidWrite(s);
+                                vidWrite((char*)args[argc]);
                                 break;
-                                /* case 'x': */
-                                /*         i = va_arg(argp, int); */
-                                /*         s = itoa(i, fmtbuf, 16); */
-                                /*         fputs(s, stdout); */
-                                /*         break; */
-                        case '%':
-                                vidPut('%');
+                        case 'x':
+                                itoab(args[argc], buff, 16);
+                                vidWrite(buff);
                                 break;
                         }
                 }
         }
 }
 
-inline u8 inb(u16 port)
-{
-        u8 ret;
-        asm volatile ("inb %1, %0" : "=a" (ret) : "dN" (port));
-        return ret;
-}
-
-inline u16 inw(u16 port)
-{
-        u16 ret;
-        asm volatile ("inw %1, %0" : "=a" (ret) : "dN" (port));
-        return ret;
-}
-
-inline void outb(u16 port, u8 value)
-{
-        asm volatile ("outb %1, %0" : "=dN" (port) : "a" (value));
-}

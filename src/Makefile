@@ -1,5 +1,5 @@
 BUILDIR = ../build
-OBJECTS = $(BUILDIR)/boot.o $(BUILDIR)/main.o $(BUILDIR)/common.o $(BUILDIR)/video.o $(BUILDIR)/gdt.o $(BUILDIR)/idt.o $(BUILDIR)/stdt-flush.o $(BUILDIR)/string.o
+OBJECTS = $(BUILDIR)/boot.o $(BUILDIR)/main.o $(BUILDIR)/common.o $(BUILDIR)/video.o $(BUILDIR)/gdt.o $(BUILDIR)/idt.o $(BUILDIR)/stdt-flush.o $(BUILDIR)/string.o $(BUILDIR)/hal.o
 CFLAGS = -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector -Wall -W
 LDFLAGS = -Tlink.ld -melf_i386
 ASFLAGS = --32
@@ -23,6 +23,7 @@ $(BUILDIR)/%.o : %.s
 # Deps (use make dep to generate this)
 common.o: common.c common.h video.h string.h
 gdt.o: gdt.c common.h
+hal.o: hal.c hal.h common.h
 idt.o: idt.c common.h video.h
 main.o: main.c common.h string.h video.h stdt.h
 string.o: string.c common.h string.h

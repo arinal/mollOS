@@ -95,9 +95,5 @@ struct registerState {
 
 void isrHandler(struct registerState registers)
 {
-        /* printk("Handled interrupt %d\n", registers.intNo); */
-        vidWrite("Handled interrupt ");
-        char buff[4];
-        itoa(registers.intNo, buff);
-        vidWrite(buff);
+        kprint("Handled interrupt 0x%x\n", registers.intNo);
 }

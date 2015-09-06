@@ -7,11 +7,13 @@ int main()
 {
         vidClear();
 
-        vidWrite("initializing GDT and IDT..\n");
+        kprint("initializing GDT and IDT..\n");
         stdtInit();
 
-        vidWrite("sending interrupt 1..\n");
+        kprint("sending interrupt 1..\n");
         asm volatile ("int $0x1");
+
+        kprint("damn %s %d %x %c\n", "you Av!", 1, S32_MAX, '#');
 
         return 0xdeadbabe;
 }

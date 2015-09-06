@@ -1,4 +1,5 @@
 #include "common.h"
+#include "hal.h"
 
 #define WIDTH 80
 #define HEIGHT 24
