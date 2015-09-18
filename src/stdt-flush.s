@@ -20,47 +20,47 @@ idtFlush:
 	lidt (%eax)
 	ret
 
-  .extern isrHandler
+	.extern isrHandler
 isrCommon:
-  pusha
-  mov %ds, %ax
-  push %eax
-  mov $0x10, %ax
-  mov %ax, %ds
-	mov %ax, %es
-	mov %ax, %fs
-	mov %ax, %gs
-
-  call isrHandler
-
-  pop %eax
+	pusha
+	mov %ds, %ax
+	push %eax
+	mov $0x10, %ax
 	mov %ax, %ds
 	mov %ax, %es
 	mov %ax, %fs
 	mov %ax, %gs
-  popa
 
-  add $0x8, %esp
-  sti
-  iret
+	call isrHandler
 
-  .global isr0
+	pop %eax
+	mov %ax, %ds
+	mov %ax, %es
+	mov %ax, %fs
+	mov %ax, %gs
+	popa
+
+	add $0x8, %esp
+	sti
+	iret
+
+	.global isr0
 isr0:
-  cli
-  pushl $0
+	cli
+  	pushl $0
 	pushl $0
-  jmp isrCommon
+  	jmp isrCommon
 
-  .global isr1
+	.global isr1
 isr1:
-  cli
-  pushl $0
-  pushl $1
-  jmp isrCommon
+	cli
+	pushl $0
+	pushl $1
+	jmp isrCommon
 
-  .global isr2
+	.global isr2
 isr2:
 	cli
 	pushl $0
-  pushl $2
+	pushl $2
 	jmp isrCommon
